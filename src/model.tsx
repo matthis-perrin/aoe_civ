@@ -1,3 +1,8 @@
+export interface Civ {
+  name: string;
+  imgUrl: string;
+}
+
 export interface AoeModel {
-  dummy: string;
+  civs: Civ[];
 }

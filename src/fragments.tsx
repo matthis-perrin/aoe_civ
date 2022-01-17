@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 export const Screen = styled(View)`
   height: 100%;
-  background-color: black;
+  background-color: #272d2f;
 `;
 
 export const LightText = styled(Text)`

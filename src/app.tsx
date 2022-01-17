@@ -1,35 +1,47 @@
-import React from 'react';
-import {SafeAreaView, ScrollView, StatusBar} from 'react-native';
+import React, {Fragment} from 'react';
+import {SafeAreaView, ScrollView, StatusBar, View} from 'react-native';
 import styled from 'styled-components';
 
-import {LightText, Screen} from './fragments';
-import {useModel} from './store';
+import {AppHalf} from './app_half';
+import {LightText} from './fragments';
 
 export const App: React.FC = () => {
-  const model = useModel();
+  // const model = useModel();
+
   return (
-    <SafeAreaWrapper>
+    <Fragment>
       <StatusBar barStyle={'light-content'} />
-      <ScrollView style={{height: '100%'}} contentInsetAdjustmentBehavior="automatic">
+      <ScrollView
+        style={{height: '100%', backgroundColor: '#272d2f'}}
+        contentInsetAdjustmentBehavior="automatic"
+      >
         <MainView>
-          <Content>{JSON.stringify(model)}</Content>
+          <LeftHalf style={{borderRightWidth: 1}}>
+            <AppHalf />
+          </LeftHalf>
+          <RightHalf>
+            <AppHalf />
+          </RightHalf>
+          {/* <Content>{JSON.stringify(model)}</Content> */}
         </MainView>
       </ScrollView>
-    </SafeAreaWrapper>
+    </Fragment>
   );
 };
 App.displayName = 'App';
 
-const SafeAreaWrapper = styled(SafeAreaView)`
-  background-color: black;
-`;
-
-const MainView = styled(Screen)`
+const MainView = styled(SafeAreaView)`
+  background-color: #272d2f;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: row;
 `;
 
-const Content = styled(LightText)`
-  /* font-size: 32px; */
+const LeftHalf = styled(View)`
+  width: 50%;
+  border: solid 0px #ffffff33;
 `;
+const RightHalf = styled(View)`
+  width: 50%;
+`;
+
+const Content = styled(LightText)``;

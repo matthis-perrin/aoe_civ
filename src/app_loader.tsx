@@ -5,7 +5,7 @@ import {App} from './app';
 import {fetchData} from './data';
 import {LoadingScreen} from './loading_screen';
 import {error} from './logger';
-import {getModel, loadModelFromDisk, setModel} from './store';
+import {loadModelFromDisk, setModel} from './store';
 
 const CLEAR_STORAGE_ON_STARTUP = true;
 
@@ -20,7 +20,6 @@ export const AppLoader: React.FC = () => {
     clearPromise
       .then(loadModelFromDisk)
       .then(loaded => {
-        console.log(getModel());
         if (loaded) {
           setLoading(false);
         } else {
