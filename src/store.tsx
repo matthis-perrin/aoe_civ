@@ -25,4 +25,4 @@ export async function loadModelFromDisk(): Promise<boolean> {
 }
 
 export const getModel = getData;
-export const useModle = useData;
+export const useModel = useData;

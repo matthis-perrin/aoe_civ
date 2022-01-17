@@ -1,14 +1,18 @@
 import React from 'react';
-import {SafeAreaView, ScrollView, StatusBar, Text, View} from 'react-native';
+import {SafeAreaView, ScrollView, StatusBar} from 'react-native';
 import styled from 'styled-components';
 
+import {LightText, Screen} from './fragments';
+import {useModel} from './store';
+
 export const App: React.FC = () => {
+  const model = useModel();
   return (
     <SafeAreaWrapper>
       <StatusBar barStyle={'light-content'} />
       <ScrollView style={{height: '100%'}} contentInsetAdjustmentBehavior="automatic">
         <MainView>
-          <Title>Hello World!</Title>
+          <Content>{JSON.stringify(model)}</Content>
         </MainView>
       </ScrollView>
     </SafeAreaWrapper>
@@ -17,17 +21,15 @@ export const App: React.FC = () => {
 App.displayName = 'App';
 
 const SafeAreaWrapper = styled(SafeAreaView)`
-  background-color: #22223b;
+  background-color: black;
 `;
 
-const MainView = styled(View)`
+const MainView = styled(Screen)`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 400px;
 `;
 
-const Title = styled(Text)`
-  color: #c9ada7;
-  font-size: 32px;
+const Content = styled(LightText)`
+  /* font-size: 32px; */
 `;

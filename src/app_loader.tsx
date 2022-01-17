@@ -5,7 +5,7 @@ import {App} from './app';
 import {fetchData} from './data';
 import {LoadingScreen} from './loading_screen';
 import {error} from './logger';
-import {loadModelFromDisk, setModel} from './store';
+import {getModel, loadModelFromDisk, setModel} from './store';
 
 const CLEAR_STORAGE_ON_STARTUP = true;
 
@@ -14,12 +14,15 @@ export const AppLoader: React.FC = () => {
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    const clearPromise = CLEAR_STORAGE_ON_STARTUP ? AsyncStorageLib.clear() : Promise.resolve();
+    const clearPromise = CLEAR_STORAGE_ON_STARTUP
+      ? AsyncStorageLib.clear().catch(() => {})
+      : Promise.resolve();
     clearPromise
       .then(loadModelFromDisk)
       .then(loaded => {
+        console.log(getModel());
         if (loaded) {
-          setLoading(true);
+          setLoading(false);
         } else {
           fetchData()
             .then(data => {

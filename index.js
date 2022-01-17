@@ -1,5 +1,5 @@
 import {AppRegistry} from 'react-native';
 
-import {App} from './src/app';
+import {AppLoader} from './src/app_loader';
 
-AppRegistry.registerComponent('aoe_civ', () => App);
+AppRegistry.registerComponent('aoe_civ', () => AppLoader);
