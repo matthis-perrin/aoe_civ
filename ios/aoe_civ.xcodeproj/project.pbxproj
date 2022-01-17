@@ -145,7 +145,6 @@
 				68771B80C4E5F742C7D9216E /* Pods-aoe_civ-aoe_civTests.debug.xcconfig */,
 				B05CB0846F59F83E9AD29259 /* Pods-aoe_civ-aoe_civTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -432,6 +431,7 @@
 			baseConfigurationReference = 68771B80C4E5F742C7D9216E /* Pods-aoe_civ-aoe_civTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = GC6A4YF4J6;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -460,6 +460,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = GC6A4YF4J6;
 				INFOPLIST_FILE = aoe_civTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -474,6 +475,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "efca2be0-3361-4d02-a529-9f9fe4fe6add";
+				PROVISIONING_PROFILE_SPECIFIER = "com.matthis.aoe-civ AppStore";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/aoe_civ.app/aoe_civ";
 			};
 			name = Release;
@@ -484,7 +487,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 2;
+				DEVELOPMENT_TEAM = GC6A4YF4J6;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = aoe_civ/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -496,8 +502,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.matthis.aoe-civ";
 				PRODUCT_NAME = aoe_civ;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -510,7 +517,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CODE_SIGN_IDENTITY = "Apple Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 2;
+				DEVELOPMENT_TEAM = GC6A4YF4J6;
 				INFOPLIST_FILE = aoe_civ/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -521,8 +531,10 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.matthis.aoe-civ";
 				PRODUCT_NAME = aoe_civ;
+				PROVISIONING_PROFILE = "efca2be0-3361-4d02-a529-9f9fe4fe6add";
+				PROVISIONING_PROFILE_SPECIFIER = "com.matthis.aoe-civ AppStore";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
