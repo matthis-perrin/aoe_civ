@@ -20,6 +20,7 @@
     ]
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.15.15",
     "react": "17.0.x",
     "react-native": "0.66.x",
     "styled-components": "5.1.x"

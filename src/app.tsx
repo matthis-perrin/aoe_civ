@@ -5,7 +5,7 @@ import styled from 'styled-components';
 export const App: React.FC = () => {
   return (
     <SafeAreaWrapper>
-      <StatusBar barStyle={'dark-content'} />
+      <StatusBar barStyle={'light-content'} />
       <ScrollView style={{height: '100%'}} contentInsetAdjustmentBehavior="automatic">
         <MainView>
           <Title>Hello World!</Title>
