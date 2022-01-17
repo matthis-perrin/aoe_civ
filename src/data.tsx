@@ -18,17 +18,55 @@ export async function fetchData(): Promise<AoeModel> {
   };
 }
 
-const dummy =
-  'https://static.wikia.nocookie.net/ageofempires/images/9/9a/CivIcon-Japanese.png/revision/latest/scale-to-width-down/208?cb=20191107173240';
-
+/* eslint-disable @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain */
 export function parseCiv(name: string, node: HTMLElement): Civ {
-  //   console.log(name, node.querySelector('img')?.attributes);
   const imgUrl =
     node.querySelector('img')?.attributes['data-src'] ??
     node.querySelector('img')?.attributes['src'] ??
     '';
+  const info = node
+    .querySelectorAll('.wds-tab__content > ul > li')
+    .map(el => ({label: el.querySelector('b')?.text ?? '', el}));
+
+  const specialty = parseSpecialty(info.find(i => i.label.includes('Specialty'))!.el);
+  const uniqUnits = parseUniqUnits(info.find(i => i.label.includes('Unique unit'))!.el);
+  const uniqTechs = parseUniqTechs(info.find(i => i.label.includes('Unique technologies'))!.el);
+  const bonuses = parseBonuses(info.find(i => i.label.includes('Civilization bonuses'))!.el);
+  const teamBonus = parseTeamBonus(info.find(i => i.label.includes('Team bonus'))!.el);
+
   return {
     name,
     imgUrl,
+    specialty,
+    uniqUnits,
+    uniqTechs,
+    bonuses,
+    teamBonus,
   };
 }
+
+export function parseSpecialty(node: HTMLElement): string {
+  return node.querySelector('a')?.text!;
+}
+export function parseUniqUnits(node: HTMLElement): string[] {
+  return node
+    .querySelectorAll('a')
+    .map(el => el.text.trim())
+    .filter(str => str.length > 0);
+}
+export function parseUniqTechs(node: HTMLElement): string[] {
+  return node
+    .querySelectorAll('li')
+    .map(el => el.text.trim())
+    .filter(str => str.length > 0);
+}
+export function parseBonuses(node: HTMLElement): string[] {
+  return node
+    .querySelectorAll('li')
+    .map(el => el.text.trim())
+    .filter(str => str.length > 0);
+}
+export function parseTeamBonus(node: HTMLElement): string {
+  return node.text.replace('Team bonus:', '').trim();
+}
+/* eslint-enable @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain */
