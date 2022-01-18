@@ -1,7 +1,8 @@
 import React from 'react';
-import {Button, ScrollView, Text, View} from 'react-native';
+import {Button, ScrollView, View} from 'react-native';
 import styled from 'styled-components';
 
+import {LightText} from './fragments';
 import {setDetailsLink, useDetailsLinkInfo} from './store_link';
 
 export const Details: React.FC<{detailsLink: string | undefined}> = ({detailsLink}) => {
@@ -17,20 +18,25 @@ export const Details: React.FC<{detailsLink: string | undefined}> = ({detailsLin
       contentInsetAdjustmentBehavior="automatic"
     >
       <Wrapper>
-        <Button title="Close" onPress={() => setDetailsLink()}></Button>
+        <Button
+          title="Close"
+          // eslint-disable-next-line react/jsx-no-bind
+          onPress={() => setDetailsLink()}
+        ></Button>
         {info === undefined ? (
-          <Text>Loading...</Text>
+          <LightText>Loading...</LightText>
         ) : (
           <View>
-            <Center>{info.title}</Center>
+            <Title>{info.title}</Title>
             {info.sections.map(section => (
               <View key={section.title}>
-                <Center>{section.title}</Center>
+                <Section>{section.title}</Section>
                 {[...section.lines.entries()].map(([key, value]) => (
                   <View key={key}>
-                    <Text>
-                      {key} | {value}
-                    </Text>
+                    <ContentLine>
+                      <ContentLabel>{key}</ContentLabel>
+                      <ContentValue>{value}</ContentValue>
+                    </ContentLine>
                   </View>
                 ))}
               </View>
@@ -46,8 +52,38 @@ Details.displayName = 'Details';
 const Wrapper = styled(View)`
   width: 100%;
   display: flex;
+  padding: 0 8px;
 `;
 
-const Center = styled(Text)`
+const Section = styled(LightText)`
   text-align: center;
+  font-weight: 500;
+  background-color: #ffffff33;
+  padding: 4px 0;
+  margin: 16px 0 4px 0;
+`;
+
+const Title = styled(LightText)`
+  text-align: center;
+  font-weight: 500;
+  font-size: 20px;
+  padding: 8px 0 0 0;
+`;
+
+const ContentLine = styled(View)`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+
+const ContentLabel = styled(LightText)`
+  background-color: #ffffff11;
+  margin-right: 4px;
+  margin-bottom: 2px;
+  font-weight: 500;
+  padding: 2px 0;
+`;
+
+const ContentValue = styled(LightText)`
+  color: #ffffffcc;
 `;
