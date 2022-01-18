@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import {LightText} from './fragments';
 import {Civ} from './model';
+import {setDetailsLink} from './store_link';
 
 interface CivViewerProps {
   civ: Civ;
@@ -30,9 +31,15 @@ export const CivViewer: React.FC<CivViewerProps> = props => {
       </Specialty>
       <UniqueUnits>
         <Label>Unique Unit</Label>
-        {uniqUnits.map(unit => (
-          <Value key={unit}>{unit}</Value>
-        ))}
+        {uniqUnits.map(({value, link}) =>
+          link === undefined ? (
+            <Value key={value}>{value}</Value>
+          ) : (
+            <Link key={value} onPress={() => setDetailsLink(link)}>
+              {value}
+            </Link>
+          )
+        )}
       </UniqueUnits>
       <UniqueTechs>
         <Label>Unique Techs</Label>
@@ -82,6 +89,11 @@ const Label = styled(LightText)`
 const Value = styled(LightText)`
   background-color: #ffffff11;
   margin-top: 2px;
+`;
+const Link = styled(LightText)`
+  background-color: #ffffff11;
+  margin-top: 2px;
+  color: lightblue;
 `;
 
 const Specialty = styled(View)`

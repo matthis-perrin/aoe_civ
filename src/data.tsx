@@ -1,11 +1,13 @@
 import {HTMLElement, parse} from 'node-html-parser';
 
-import {AoeModel, Civ} from './model';
+import {AoeModel, Civ, LinkedString} from './model';
+
+const BASE_URL = 'https://ageofempires.fandom.com';
 
 export async function fetchData(): Promise<AoeModel> {
-  const html = await fetch(
-    'https://ageofempires.fandom.com/wiki/Civilizations_(Age_of_Empires_II)'
-  ).then(async res => res.text());
+  const html = await fetch(`${BASE_URL}/wiki/Civilizations_(Age_of_Empires_II)`).then(async res =>
+    res.text()
+  );
 
   const doc = parse(html);
   return {
@@ -48,11 +50,14 @@ export function parseCiv(name: string, node: HTMLElement): Civ {
 export function parseSpecialty(node: HTMLElement): string {
   return node.querySelector('a')?.text!;
 }
-export function parseUniqUnits(node: HTMLElement): string[] {
+export function parseUniqUnits(node: HTMLElement): LinkedString[] {
   return node
     .querySelectorAll('a')
-    .map(el => el.text.trim())
-    .filter(str => str.length > 0);
+    .map<LinkedString>(el => ({
+      value: el.text.trim(),
+      link: `${BASE_URL}${el.getAttribute('href')}`,
+    }))
+    .filter(link => link.value.length > 0);
 }
 export function parseUniqTechs(node: HTMLElement): string[] {
   return node

@@ -3,16 +3,21 @@ import {SafeAreaView, ScrollView, StatusBar, View} from 'react-native';
 import styled from 'styled-components';
 
 import {AppHalf} from './app_half';
-import {LightText} from './fragments';
+import {Details} from './details';
+import {useDetailsLink} from './store_link';
 
 export const App: React.FC = () => {
-  // const model = useModel();
+  const detailsLink = useDetailsLink();
 
   return (
     <Fragment>
       <StatusBar barStyle={'light-content'} />
       <ScrollView
-        style={{height: '100%', backgroundColor: '#272d2f'}}
+        style={{
+          height: '100%',
+          backgroundColor: '#272d2f',
+          display: detailsLink === undefined ? 'flex' : 'none',
+        }}
         contentInsetAdjustmentBehavior="automatic"
       >
         <MainView>
@@ -22,9 +27,9 @@ export const App: React.FC = () => {
           <RightHalf>
             <AppHalf />
           </RightHalf>
-          {/* <Content>{JSON.stringify(model)}</Content> */}
         </MainView>
       </ScrollView>
+      <Details detailsLink={detailsLink} />
     </Fragment>
   );
 };
@@ -43,5 +48,3 @@ const LeftHalf = styled(View)`
 const RightHalf = styled(View)`
   width: 50%;
 `;
-
-const Content = styled(LightText)``;

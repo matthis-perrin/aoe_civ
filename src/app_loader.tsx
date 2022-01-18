@@ -7,7 +7,7 @@ import {LoadingScreen} from './loading_screen';
 import {error} from './logger';
 import {loadModelFromDisk, setModel} from './store';
 
-const CLEAR_STORAGE_ON_STARTUP = true;
+const CLEAR_STORAGE_ON_STARTUP = false;
 
 export const AppLoader: React.FC = () => {
   const [loading, setLoading] = useState(true);
@@ -22,6 +22,7 @@ export const AppLoader: React.FC = () => {
       .then(loaded => {
         if (loaded) {
           setLoading(false);
+          fetchData().then(setModel).catch(error);
         } else {
           fetchData()
             .then(data => {
