@@ -53,17 +53,36 @@ export function parseSpecialty(node: HTMLElement): string {
 export function parseUniqUnits(node: HTMLElement): LinkedString[] {
   return node
     .querySelectorAll('a')
-    .map<LinkedString>(el => ({
-      value: el.text.trim(),
-      link: `${BASE_URL}${el.getAttribute('href')}`,
-    }))
-    .filter(link => link.value.length > 0);
+    .map<LinkedString>(el => {
+      const maybeImg = el.parentNode.querySelector('img');
+      return {
+        value: el.text.trim(),
+        link: `${BASE_URL}${el.getAttribute('href')}`,
+        src: decodeURIComponent(
+          maybeImg?.getAttribute('data-src') ?? maybeImg?.getAttribute('src') ?? ''
+        ),
+        width: parseFloat(maybeImg?.getAttribute('width') ?? '0'),
+        height: parseFloat(maybeImg?.getAttribute('height') ?? '0'),
+      };
+    })
+    .filter(link => link.value.length > 0 && link.value !== 'Unique unit');
 }
-export function parseUniqTechs(node: HTMLElement): string[] {
+export function parseUniqTechs(node: HTMLElement): LinkedString[] {
   return node
     .querySelectorAll('li')
-    .map(el => el.text.trim())
-    .filter(str => str.length > 0);
+    .map(el => {
+      const maybeImg = el.querySelector('img');
+      return {
+        value: el.text.trim(),
+        link: `${BASE_URL}${el.getAttribute('href')}`,
+        src: decodeURIComponent(
+          maybeImg?.getAttribute('data-src') ?? maybeImg?.getAttribute('src') ?? ''
+        ),
+        width: parseFloat(maybeImg?.getAttribute('width') ?? '0'),
+        height: parseFloat(maybeImg?.getAttribute('height') ?? '0'),
+      };
+    })
+    .filter(link => link.value.length > 0);
 }
 export function parseBonuses(node: HTMLElement): string[] {
   return node

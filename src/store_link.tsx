@@ -1,4 +1,4 @@
-import {HTMLElement, parse} from 'node-html-parser';
+import {HTMLElement, Node, NodeType, parse} from 'node-html-parser';
 
 import {createDataStore} from './data_store';
 import {error} from './logger';
@@ -25,7 +25,19 @@ interface DetailsModel {
 
 interface Section {
   title?: string;
-  lines: Map<string, string>;
+  lines: Map<string, LineItem[]>;
+}
+
+interface Image {
+  src: string;
+  width: number;
+  height: number;
+}
+
+type LineItem = string | Image;
+
+export function isImage(item: LineItem): item is Image {
+  return typeof item !== 'string';
 }
 
 async function fetchData(link: string): Promise<DetailsModel> {
@@ -50,12 +62,52 @@ function parseSections(node: HTMLElement): Section[] {
   return node.querySelectorAll('section').map<Section>(el => ({
     title: el.querySelector('h2')?.text,
     lines: new Map(
-      el
-        .querySelectorAll('div.pi-item.pi-data')
-        .map(e => [
-          e.querySelector('h3.pi-data-label')?.text ?? '',
-          e.querySelector('div.pi-data-value')?.text ?? '',
-        ])
+      el.querySelectorAll('div.pi-item.pi-data').map(e => {
+        const lineItems: LineItem[] = [];
+        const containerEl = e.querySelector('div.pi-data-value');
+        if (containerEl) {
+          for (const node of getChildNodes(containerEl)) {
+            if (node.nodeType === NodeType.COMMENT_NODE) {
+              continue;
+            }
+            if (node.nodeType === NodeType.TEXT_NODE) {
+              lineItems.push(node.text);
+            }
+            if (node.nodeType === NodeType.ELEMENT_NODE) {
+              const el = node as HTMLElement;
+              const maybeImg = el.querySelector('img');
+              const maybeSrc = maybeImg?.getAttribute('data-src') ?? maybeImg?.getAttribute('src');
+              if (maybeSrc !== undefined) {
+                lineItems.push({
+                  src: decodeURIComponent(maybeSrc),
+                  width: parseFloat(maybeImg?.getAttribute('width') ?? '0'),
+                  height: parseFloat(maybeImg?.getAttribute('height') ?? '0'),
+                });
+              } else if (el.tagName === 'BR') {
+                lineItems.push('\n');
+              } else {
+                lineItems.push(el.text);
+              }
+            }
+          }
+        }
+        return [e.querySelector('h3.pi-data-label')?.text ?? '', lineItems];
+      })
     ),
   }));
+}
+
+function getChildNodes(e: HTMLElement): Node[] {
+  if (!e.innerHTML.includes('<span style="white-space: nowrap"></span>')) {
+    return e.childNodes;
+  }
+  for (const node of e.childNodes) {
+    if (node.nodeType === NodeType.ELEMENT_NODE) {
+      const el = node as HTMLElement;
+      if (el.innerHTML !== '<span style="white-space: nowrap"></span>' && el.innerHTML !== '') {
+        return getChildNodes(el);
+      }
+    }
+  }
+  return [];
 }

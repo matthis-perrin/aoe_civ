@@ -1,9 +1,9 @@
 import React from 'react';
-import {Button, ScrollView, View} from 'react-native';
+import {Button, Image, ScrollView, Text, View} from 'react-native';
 import styled from 'styled-components';
 
 import {LightText} from './fragments';
-import {setDetailsLink, useDetailsLinkInfo} from './store_link';
+import {isImage, setDetailsLink, useDetailsLinkInfo} from './store_link';
 
 export const Details: React.FC<{detailsLink: string | undefined}> = ({detailsLink}) => {
   const info = useDetailsLinkInfo();
@@ -31,11 +31,23 @@ export const Details: React.FC<{detailsLink: string | undefined}> = ({detailsLin
             {info.sections.map(section => (
               <View key={section.title}>
                 <Section>{section.title}</Section>
-                {[...section.lines.entries()].map(([key, value]) => (
+                {[...section.lines.entries()].map(([key, items]) => (
                   <View key={key}>
                     <ContentLine>
                       <ContentLabel>{key}</ContentLabel>
-                      <ContentValue>{value}</ContentValue>
+                      <ContentValue>
+                        {items.map((i, index) => {
+                          if (isImage(i)) {
+                            return (
+                              <BeautifulImage
+                                key={key + i.src + String(index)}
+                                source={{uri: i.src, width: i.width, height: i.height}}
+                              />
+                            );
+                          }
+                          return <Text key={key + i + String(index)}>{i}</Text>;
+                        })}
+                      </ContentValue>
                     </ContentLine>
                   </View>
                 ))}
@@ -86,4 +98,8 @@ const ContentLabel = styled(LightText)`
 
 const ContentValue = styled(LightText)`
   color: #ffffffcc;
+`;
+
+const BeautifulImage = styled(Image)`
+  margin-top: -4px;
 `;

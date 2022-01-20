@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, TouchableOpacity, View} from 'react-native';
+import {Image, Text, TouchableOpacity, View} from 'react-native';
 import styled from 'styled-components';
 
 import {LightText} from './fragments';
@@ -31,20 +31,20 @@ export const CivViewer: React.FC<CivViewerProps> = props => {
       </Specialty>
       <UniqueUnits>
         <Label>Unique Unit</Label>
-        {uniqUnits.map(({value, link}) =>
-          link === undefined ? (
-            <Value key={value}>{value}</Value>
-          ) : (
-            <Link key={value} onPress={() => setDetailsLink(link)}>
-              {value}
-            </Link>
-          )
-        )}
+        {uniqUnits.map(({value, link, src, width, height}) => (
+          <Link key={value} onPress={() => setDetailsLink(link)}>
+            <BeautifulImage source={{uri: src, width, height}} />
+            <Text>{value}</Text>
+          </Link>
+        ))}
       </UniqueUnits>
       <UniqueTechs>
         <Label>Unique Techs</Label>
-        {uniqTechs.map(tech => (
-          <Value key={tech}>{tech}</Value>
+        {uniqTechs.map(({value, link, src, width, height}) => (
+          <LightText key={value}>
+            <BeautifulImage source={{uri: src, width, height}} />
+            <Text>{value}</Text>
+          </LightText>
         ))}
       </UniqueTechs>
       <Bonuses>
@@ -109,9 +109,13 @@ const UniqueTechs = styled(View)`
 `;
 
 const Bonuses = styled(View)`
-  height: 256px;
+  height: 314px;
 `;
 
 const TeamBonus = styled(View)`
   height: 48px;
+`;
+
+const BeautifulImage = styled(Image)`
+  margin-top: -6px;
 `;
