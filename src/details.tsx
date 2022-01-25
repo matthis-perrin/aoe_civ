@@ -31,9 +31,9 @@ export const Details: React.FC<{detailsLink: string | undefined}> = ({detailsLin
             {info.sections.map(section => (
               <View key={section.title}>
                 <Section>{section.title}</Section>
-                {[...section.lines.entries()].map(([key, items]) => (
+                {[...section.lines.entries()].map(([key, items], index) => (
                   <View key={key}>
-                    <ContentLine>
+                    <ContentLine even={index % 2 === 0}>
                       <ContentLabel>{key}</ContentLabel>
                       <ContentValue>
                         {items.map((i, index) => {
@@ -72,7 +72,7 @@ const Section = styled(LightText)`
   font-weight: 500;
   background-color: #ffffff33;
   padding: 4px 0;
-  margin: 16px 0 4px 0;
+  margin: 16px 0 0 0;
 `;
 
 const Title = styled(LightText)`
@@ -82,15 +82,15 @@ const Title = styled(LightText)`
   padding: 8px 0 0 0;
 `;
 
-const ContentLine = styled(View)`
+const ContentLine = styled(View)<{even: boolean}>`
   display: flex;
   flex-direction: row;
   align-items: center;
+  background-color: ${p => (p.even ? '#ffffff11' : '#ffffff22')};
 `;
 
 const ContentLabel = styled(LightText)`
-  background-color: #ffffff11;
-  margin-right: 4px;
+  margin-right: 10px;
   margin-bottom: 2px;
   font-weight: 500;
   padding: 2px 0;
@@ -98,6 +98,8 @@ const ContentLabel = styled(LightText)`
 
 const ContentValue = styled(LightText)`
   color: #ffffffcc;
+  flex: 1;
+  flex-wrap: wrap;
 `;
 
 const BeautifulImage = styled(Image)`
